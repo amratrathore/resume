@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amrat Kumar Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* --- THEME & COLOR VARIABLES (Blue Network Professional - Dark Mode Base) --- */
+        :root {
+            --bg-dark-primary: #040d21; /* Deep dark blue */
+            --bg-dark-secondary: #0c183a; /* Slightly lighter dark blue */
+            --text-light: #e0e0e0;      /* Soft white */
+            --text-muted: #a0a0a0;      /* Gray for secondary text */
+            
+            --accent-blue: #4a90e2;     /* Vibrant blue from image */
+            --accent-blue-light: #8ecae6; /* Lighter blue for highlights */
+            --accent-green: #20c997;    /* Teal for contrast */
+            --accent-purple: #a855f7;   /* Violet for contrast (keeping a bit of old theme) */
+
+            --card-bg: #1a233b;         /* Dark blue slate */
+            --card-border: rgba(74, 144, 226, 0.3); /* Blue tinted border */
+            --card-hover-bg: #2b3552;   /* Slightly lighter on hover */
+            
+            --shadow-primary: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-accent-blue: 0 0 20px rgba(74, 144, 226, 0.5); /* Blue shadow */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark-primary);
+            color: var(--text-light);
+            scroll-behavior: smooth;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        
+        /* --- BACKGROUND CANVAS --- */
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Behind all content */
+            pointer-events: none; /* Not clickable */
+            opacity: 0.7; /* Make it subtle */
+        }
+
+
+        /* --- ANIMATION KEYFRAMES --- */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInZoom {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(0.3); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* --- CUSTOM CLASSES --- */
+
+        .animated-header {
+            animation: fadeInDown 0.8s ease-out both;
+        }
+
+        .animated-heading {
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .animated-card {
+            animation: slideInUp 0.6s ease-out both;
+        }
+
+        .profile-container {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--accent-blue);
+            box-shadow: var(--shadow-accent-blue);
+            transform: scale(1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; /* For the pulse effect */
+            z-index: 10; /* Ensure it's above the pulse and header */
+            background-color: var(--bg-dark-primary); /* Ensures background color behind image */
+            margin-top: 2rem; /* Give some space */
+        }
+
+        .profile-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(74, 144, 226, 0.8);
+        }
+
+        .profile-pulse::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            animation: pulseRing 2s ease-out forwards; /* Only run once */
+            animation-delay: 0.5s; /* Start after a small delay */
+            z-index: -1;
+        }
+        .profile-pulse.second-pulse::before {
+            animation-delay: 1.0s;
+            animation-duration: 2.5s;
+        }
+        .profile-pulse.third-pulse::before {
+            animation-delay: 1.5s;
+            animation-duration: 3s;
+        }
+
+
+        .section-header {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 800;
+            color: var(--accent-blue);
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.4);
+            margin-bottom: 2rem;
+            animation: fadeInZoom 0.8s ease-out 0.4s both;
+        }
+
+        .interactive-card {
+            background-color: var(--card-bg);
+            transition: all 0.3s ease-in-out;
+            border: 1px solid var(--card-border);
+            border-radius: 1rem; /* rounded-2xl */
+        }
+
+        .interactive-card:hover {
+            background-color: var(--card-hover-bg);
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-accent-blue);
+        }
+        
+        .icon-link {
+            color: var(--text-muted);
+            transition: all 0.3s ease-in-out;
+        }
+        .icon-link:hover {
+            color: var(--accent-green); /* Teal on hover for social icons */
+            transform: scale(1.1);
+        }
+
+        /* Specific colors for skill icons */
+        .skill-icon-primary { color: var(--accent-green); }
+        .skill-icon-secondary { color: var(--accent-orange); }
+        .skill-icon-tertiary { color: var(--accent-purple); } /* Used purple here for variety */
+        
+    </style>
+</head>
+<body>
+    
+<!-- Canvas element for JS animation --><canvas id="background-canvas"></canvas>
+
+    <header class="pt-16 pb-20 bg-gradient-to-b from-bg-dark-primary to-bg-dark-secondary border-b border-gray-700">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+            <div class="flex justify-center animated-header">
+                <div class="profile-container" id="profile-animation-target">
+                    <img id="profile-img"
+                         src="./akprofile.jpg"
+                         alt="Amrat Kumar Profile Picture"
+                         onerror="this.onerror=null; this.src='https://placehold.co/180x180/1a233b/4a90e2?text=Amrat%20K';"
+                         class="w-full h-full object-cover rounded-full">
+                </div>
+            </div>
+
+            <h1 class="text-5xl sm:text-6xl font-extrabold mt-8 text-text-light animated-heading" id="user-name">
+                Amrat Kumar
+            </h1>
+            <p class="text-xl sm:text-2xl font-medium text-accent-blue-light mt-3 animated-heading" style="animation-delay: 0.3s;">
+                IT Undergrad @ GC University Hyderabad
+            </p>
+
+            <div class="flex justify-center space-x-8 mt-10 animated-header" style="animation-delay: 0.4s;">
+                <!-- WhatsApp --><a href="https://wa.me/03418094202" target="_blank" class="icon-link">
+                    <i data-lucide="message-circle" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+                </a>
+                <!-- Facebook --><a href="https://www.facebook.com/share/14Lp3jWg2vM/" target="_blank" class="icon-link">
+                    <i data-lucide="facebook" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+                </a>
+                <!-- LinkedIn --><a href="https://www.linkedin.com/in/amrat-kumar-360877298?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="icon-link">
+                    <i data-lucide="linkedin" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+                </a>
+                <!-- Instagram --><a href="https://www.instagram.com/akrathore__1?igsh=MXFzcXJoM2c5dDNleQ==" target="_blank" class="icon-link">
+                    <i data-lucide="instagram" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+                </a>
+                <!-- X (Twitter) --><a href="https://x.com/AkrathoreAkrat1?t=HxsL3oRyamNiwytDF6sBSQ&s=09" target="_blank" class="icon-link">
+                    <i data-lucide="x" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <section id="about" class="mb-16">
+            <h2 class="section-header">About</h2>
+            <div class="interactive-card p-6 sm:p-8 rounded-2xl shadow-xl animated-card" style="animation-delay: 0.6s;">
+                <p class="text-lg text-text-light leading-relaxed" id="about-text">
+                    I am Amrat Kumar, an **aspiring IT professional** and a dedicated B.S. undergrad in **Information Technology (IT)** at **GC University, Hyderabad**. I am deeply passionate about both **software development and strategic thinking**, often finding parallels between coding complex systems and playing a game of Chess.
+                    <br><br>
+                    Currently, I'm strengthening my foundation in core languages like **C++, Java, and Python** and honing my skills in front-end technologies. I use **Git and GitHub** extensively to manage my projects and collaborate effectively. My goal is to continually learn and evolve, tackling new challenges and creating innovative solutions along the way.
+                </p>
+            </div>
+        </section>
+
+        <section id="education" class="mb-16">
+            <h2 class="section-header">Education</h2>
+
+            <div class="space-y-8">
+                <div class="interactive-card p-6 rounded-2xl shadow-lg border-l-4 border-accent-blue flex items-start space-x-4 animated-card" style="animation-delay: 0.8s;">
+                    <div class="flex-shrink-0">
+                        <i data-lucide="graduation-cap" class="w-8 h-8 skill-icon-primary"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-text-light">B.S. Information Technology (IT)</h3>
+                        <p class="text-accent-blue-light font-semibold">GC University Hyderabad</p>
+                        <p class="text-text-muted text-sm mt-1">2024 - Present (Expected 2028)</p>
+                    </div>
+                </div>
+
+                <div class="interactive-card p-6 rounded-2xl shadow-lg border-l-4 border-accent-blue flex items-start space-x-4 animated-card" style="animation-delay: 0.9s;">
+                    <div class="flex-shrink-0">
+                        <i data-lucide="book-open" class="w-8 h-8 skill-icon-secondary"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-text-light">College - Computer Science</h3>
+                        <p class="text-accent-blue-light font-semibold">Sadique Faqeer Government Boys Degree College Mithi</p>
+                        <p class="text-text-muted text-sm mt-1"> 2023</p>
+                    </div>
+                </div>
+
+                <div class="interactive-card p-6 rounded-2xl shadow-lg border-l-4 border-accent-blue flex items-start space-x-4 animated-card" style="animation-delay: 1.0s;">
+                    <div class="flex-shrink-0">
+                        <i data-lucide="school" class="w-8 h-8 skill-icon-tertiary"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-text-light">High School - Computer Science</h3>
+                        <p class="text-accent-blue-light font-semibold">Govt Boy's High School Mithi</p>
+                        <p class="text-text-muted text-sm mt-1">2021</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="mb-16">
+            <h2 class="section-header">Skills</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <div class="interactive-card p-6 rounded-2xl shadow-lg text-center animated-card" style="animation-delay: 1.1s;">
+                    <i data-lucide="code" class="w-10 h-10 skill-icon-primary mx-auto mb-3"></i>
+                    <h3 class="text-xl font-bold text-text-light">Programming Languages</h3>
+                    <p class="text-text-muted mt-2">**C, C++, Java, Python**</p>
+                </div>
+
+                <div class="interactive-card p-6 rounded-2xl shadow-lg text-center animated-card" style="animation-delay: 1.2s;">
+                    <i data-lucide="layout-grid" class="w-10 h-10 skill-icon-secondary mx-auto mb-3"></i>
+                    <h3 class="text-xl font-bold text-text-light">Front-End Development</h3>
+                    <p class="text-text-muted mt-2">HTML, CSS, JavaScript</p>
+                </div>
+
+                <div class="interactive-card p-6 rounded-2xl shadow-lg text-center animated-card" style="animation-delay: 1.3s;">
+                    <i data-lucide="wrench" class="w-10 h-10 skill-icon-tertiary mx-auto mb-3"></i>
+                    <h3 class="text-xl font-bold text-text-light">Tools & OS</h3>
+                    <p class="text-text-muted mt-2">Git, GitHub, Linux</p>
+                </div>
+                
+                <div class="interactive-card p-6 rounded-2xl shadow-lg text-center animated-card" style="animation-delay: 1.4s;">
+                    <i data-lucide="image" class="w-10 h-10 skill-icon-primary mx-auto mb-3"></i>
+                    <h3 class="text-xl font-bold text-text-light">Graphic Design</h3>
+                    <p class="text-text-muted mt-2">Figma, Canva, Adobe XD (Basics)</p>
+                </div>
+                
+                <div class="interactive-card p-6 rounded-2xl shadow-lg text-center animated-card" style="animation-delay: 1.5s;">
+                    <i data-lucide="video" class="w-10 h-10 skill-icon-secondary mx-auto mb-3"></i>
+                    <h3 class="text-xl font-bold text-text-light">Video Editing</h3>
+                    <p class="text-text-muted mt-2">CapCut, Adobe Premiere (Basics)</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-bg-dark-secondary text-text-muted py-6 border-t border-gray-700">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm">&copy; 2025 Amrat Kumar. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- PROFILE IMAGE PULSE ANIMATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const profileContainer = document.getElementById('profile-animation-target');
+            if (profileContainer) {
+                profileContainer.classList.add('profile-pulse');
+                setTimeout(() => { profileContainer.classList.add('second-pulse'); }, 500);
+                setTimeout(() => { profileContainer.classList.add('third-pulse'); }, 1000);
+                setTimeout(() => {
+                    profileContainer.classList.remove('profile-pulse', 'second-pulse', 'third-pulse');
+                }, 4000); 
+            }
+        });
+
+        // Staggered animation for section cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.animated-card');
+            cards.forEach((card, index) => {
+                let initialDelay = parseFloat(card.style.animationDelay) || 0;
+                card.style.animationDelay = `${initialDelay + (index * 0.1)}s`;
+            });
+        });
+        
+        // --- BACKGROUND NETWORK ANIMATION (JS CANVAS) ---
+        
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height, particles, animationFrameId;
+        // --- Particle/Line Colors (from --accent-blue: #4a90e2) ---
+        const particleColor = 'rgb(74, 144, 226)'; // #4a90e2
+        const particleRadius = 1.5;
+        const particleCount = 100;
+        const connectionDistance = 120; 
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.7; 
+                this.vy = (Math.random() - 0.5) * 0.7;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, particleRadius, 0, Math.PI * 2);
+                ctx.fillStyle = particleColor;
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            animate();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (const particle of particles) {
+                particle.update();
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                for (let j = i + 1; j < particleCount; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[j].y);
+                        ctx.lineTo(particles[j].x, particles[i].y);
+                        
+                        const opacity = 1 - (dist / connectionDistance);
+                        ctx.strokeStyle = `rgba(74, 144, 226, ${opacity * 0.25})`; // Blue lines
+                        
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        // Initialize and handle window resizing
+        init();
+        window.addEventListener('resize', init);
+
+    </script>
+</body>
+</html>
+
