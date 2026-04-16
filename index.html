@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -18,7 +18,7 @@ body {
     margin:0;
 }
 
-/* BACKGROUND CANVAS */
+/* BACKGROUND */
 canvas {
     position: fixed;
     top:0;
@@ -45,6 +45,14 @@ canvas {
     font-size:20px;
     margin-bottom:12px;
 }
+
+/* ICON HOVER */
+.icon a {
+    transition:0.3s;
+}
+.icon a:hover {
+    transform:scale(1.2);
+}
 </style>
 </head>
 
@@ -54,7 +62,8 @@ canvas {
 
 <!-- HEADER -->
 <div class="text-center pt-16 pb-10">
-    <img src="akprofile.jpg.jpeg" class="w-24 h-24 rounded-full mx-auto border-2 border-blue-400">
+
+    <img src="akprofile.jpg" class="w-24 h-24 rounded-full mx-auto border-2 border-blue-400">
 
     <h1 class="text-3xl font-bold mt-4">Amrat Kumar</h1>
 
@@ -62,11 +71,31 @@ canvas {
         Cybersecurity Learner 🔐 | IT Undergrad
     </p>
 
-    <div class="flex justify-center gap-6 mt-4 text-gray-400">
-        <i data-lucide="linkedin"></i>
-        <i data-lucide="github"></i>
-        <i data-lucide="instagram"></i>
+    <!-- CONTACT ICONS -->
+    <div class="flex justify-center gap-6 mt-4 text-xl icon">
+
+        <!-- Email -->
+        <a href="mailto:akrathoreakrathore93@gmail.com" class="text-gray-400 hover:text-blue-400">
+            <i data-lucide="mail"></i>
+        </a>
+
+        <!-- WhatsApp -->
+        <a href="https://wa.me/923418094202" target="_blank" class="text-gray-400 hover:text-green-400">
+            <i data-lucide="message-circle"></i>
+        </a>
+
+        <!-- Facebook -->
+        <a href="https://facebook.com" target="_blank" class="text-gray-400 hover:text-blue-500">
+            <i data-lucide="facebook"></i>
+        </a>
+
+        <!-- GitHub -->
+        <a href="https://github.com/amratrathore" target="_blank" class="text-gray-400 hover:text-white">
+            <i data-lucide="github"></i>
+        </a>
+
     </div>
+
 </div>
 
 <div class="max-w-xl mx-auto px-4 space-y-8">
@@ -100,7 +129,7 @@ canvas {
         </div>
 
         <div class="card text-sm">
-            <b>College – Pre Medical </b><br>
+            <b>College – Pre Medical</b><br>
             Govt Degree College Mithi<br>
             <span class="text-gray-400 text-xs">2023</span>
         </div>
@@ -126,11 +155,10 @@ canvas {
 
         <div class="card text-center">Tools & OS<br><span class="text-gray-400 text-xs">Git, GitHub, Linux</span></div>
 
-        <div class="card text-center">Graphic Design<br><span class="text-gray-400 text-xs"> Adobe PS ,Figma, Canva</span></div>
+        <div class="card text-center">Graphic Design<br><span class="text-gray-400 text-xs">Adobe PS, Figma, Canva</span></div>
 
-        <div class="card text-center">Video Editing<br><span class="text-gray-400 text-xs">  Adobe Premiere ,CapCut , KIneMaster , </span></div>
+        <div class="card text-center">Video Editing<br><span class="text-gray-400 text-xs">Adobe Premiere, CapCut, Kinemaster</span></div>
 
-        <!-- NEW -->
         <div class="card text-center">
             Cybersecurity<br>
             <span class="text-gray-400 text-xs">Networking, Linux, Wireshark</span>
